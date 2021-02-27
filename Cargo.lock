@@ -1577,13 +1577,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "game"
-version = "0.1.0"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "getrandom"
 version = "0.1.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1861,6 +1854,13 @@ dependencies = [
  "ab_glyph",
  "approx",
  "xi-unicode",
+]
+
+[[package]]
+name = "grid"
+version = "0.1.0"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]
