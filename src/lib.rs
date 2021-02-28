@@ -72,10 +72,12 @@ impl Default for Grid {
     }
 }
 
+#[derive(Eq, PartialEq)]
 pub enum GridMode {
     Fit,
     FitX,
     FitY,
+    Adjust,
 }
 
 fn update_grid(
@@ -92,12 +94,16 @@ fn update_grid(
         let height = step_y * size.height as f32;
 
         match grid.mode {
-            GridMode::Fit => {
+            GridMode::Adjust => {
+                let width = (grid.width * size.width) as f32;
+                let height = (grid.height * size.height) as f32;
+
                 sprite.size = Vec2::new(width, height);
                 transform.translation.x =
-                    step_x * position.x as f32 - window.width() / 2.0 + width / 2.0;
-                transform.translation.y =
-                    -step_y * position.y as f32 + window.height() / 2.0 - height / 2.0;
+                    (grid.width as i32 * position.x) as f32 - window.width() / 2.0 + width / 2.0;
+                transform.translation.y = (-(grid.height as i32) * position.y) as f32
+                    + window.height() / 2.0
+                    - height / 2.0;
             }
 
             GridMode::FitY => {
@@ -115,6 +121,15 @@ fn update_grid(
                     step_x * position.x as f32 - window.width() / 2.0 + width / 2.0;
                 transform.translation.y =
                     -step_x * position.y as f32 + window.height() / 2.0 - width / 2.0;
+            }
+
+            // default mode is Fit
+            _ => {
+                sprite.size = Vec2::new(width, height);
+                transform.translation.x =
+                    step_x * position.x as f32 - window.width() / 2.0 + width / 2.0;
+                transform.translation.y =
+                    -step_y * position.y as f32 + window.height() / 2.0 - height / 2.0;
             }
         }
     }
