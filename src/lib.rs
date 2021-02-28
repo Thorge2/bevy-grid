@@ -1,5 +1,15 @@
 use bevy::prelude::*;
 
+/// A plugin for the bevy game engine
+///
+/// # Usage
+///
+/// ```
+/// App::build()
+/// .add_plugins(DefaultPlugins)
+/// .add_plugin(GridPlugin)
+/// .run()
+/// ```
 pub struct GridPlugin;
 impl Plugin for GridPlugin {
     fn build(&self, app: &mut AppBuilder) {
@@ -90,9 +100,6 @@ fn update_grid(
         let step_x = window.width() / grid.width as f32;
         let step_y = window.height() / grid.height as f32;
 
-        let width = step_x * size.width as f32;
-        let height = step_y * size.height as f32;
-
         match grid.mode {
             GridMode::Adjust => {
                 let width = (grid.width * size.width) as f32;
@@ -107,24 +114,33 @@ fn update_grid(
             }
 
             GridMode::FitY => {
-                sprite.size = Vec2::new(height, height);
+                let width = step_y * size.width as f32;
+                let height = step_y * size.height as f32;
+
+                sprite.size = Vec2::new(width, height);
                 transform.translation.x =
-                    step_y * position.x as f32 - window.width() / 2.0 + height / 2.0;
+                    step_y * position.x as f32 - window.width() / 2.0 + width / 2.0;
                 transform.translation.y =
                     -step_y * position.y as f32 + window.height() / 2.0 - height / 2.0;
             }
 
             GridMode::FitX => {
-                sprite.size = Vec2::new(width, width);
+                let width = step_x * size.width as f32;
+                let height = step_x * size.height as f32;
+
+                sprite.size = Vec2::new(width, height);
 
                 transform.translation.x =
                     step_x * position.x as f32 - window.width() / 2.0 + width / 2.0;
                 transform.translation.y =
-                    -step_x * position.y as f32 + window.height() / 2.0 - width / 2.0;
+                    -step_x * position.y as f32 + window.height() / 2.0 - height / 2.0;
             }
 
             // default mode is Fit
             _ => {
+                let width = step_x * size.width as f32;
+                let height = step_y * size.height as f32;
+
                 sprite.size = Vec2::new(width, height);
                 transform.translation.x =
                     step_x * position.x as f32 - window.width() / 2.0 + width / 2.0;
