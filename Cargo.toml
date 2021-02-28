@@ -1,5 +1,5 @@
 [package]
-name = "bevy-grid"
+name = "bevy_grid"
 version = "0.1.0"
 authors = ["Thorge Hemken"]
 edition = "2018"
